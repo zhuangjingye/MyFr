@@ -12,12 +12,12 @@ package com.base;
 
 import java.util.ArrayList;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.Volley;
-import com.android.volley.toolbox.ImageLoader.ImageCache;
-import com.android.volley.toolbox.ImageLoader.ImageListener;
+import com.base.net.volley.Request;
+import com.base.net.volley.RequestQueue;
+import com.base.net.volley.toolbox.ImageLoader;
+import com.base.net.volley.toolbox.Volley;
+import com.base.net.volley.toolbox.ImageLoader.ImageCache;
+import com.base.net.volley.toolbox.ImageLoader.ImageListener;
 import com.base.mydialog.BaseDialog;
 import com.base.mydialog.MyBaseDialog;
 import com.base.view.toast.MyToast;
