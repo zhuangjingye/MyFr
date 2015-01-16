@@ -12,6 +12,12 @@ package com.base;
 
 import java.util.ArrayList;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.Volley;
+import com.android.volley.toolbox.ImageLoader.ImageCache;
+import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.base.mydialog.BaseDialog;
 import com.base.mydialog.MyBaseDialog;
 import com.base.view.toast.MyToast;
@@ -21,12 +27,18 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.util.LruCache;
 import android.view.Window;
 import android.widget.Toast;
 
 public class MyBaseActivity extends Activity {
 
+	private RequestQueue requestQueue;//请求队列
+	
+	public static final LruCache<String, Bitmap> lruCache = new LruCache<String, Bitmap>(100);
+	
 	/** 用来标志退出所有Activity的广播action */
 	public static String BROAD_CASET_FINISH = "finish";
 	/** 选择关闭Activity的广播action */
@@ -40,6 +52,7 @@ public class MyBaseActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		requestQueue = Volley.newRequestQueue(this);
 		// 发送广播选择关闭界面
 		rhelper = new BroadcastReceiverHelper(this);
 		rhelper.registerAction(BROAD_CASET_CHOSE_FINISH);
@@ -67,6 +80,7 @@ public class MyBaseActivity extends Activity {
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
+		requestQueue.cancelAll(this);
 	}
 
 	@Override
@@ -223,4 +237,57 @@ public class MyBaseActivity extends Activity {
 	public void showToast(int strId) {
 		showToast(strId, Toast.LENGTH_SHORT);
 	}
+	
+	/**
+	 * 
+	 * 方法描述 : 开始请求
+	 * 创建者：lixin 
+	 * 创建时间： 2015年1月16日 下午4:42:57
+	 * @param request void
+	 *
+	 */
+	public <T>void startRequest(Request<T> request) {
+		requestQueue.add(request);
+	}
+	
+	/**
+	 * 
+	 * 方法描述 : 获得请求队列
+	 * 创建者：lixin 
+	 * 创建时间： 2015年1月16日 下午4:52:53
+	 * @return RequestQueue
+	 *
+	 */
+	public RequestQueue getRequestQueue(){
+		return requestQueue;
+	}
+	
+	/**
+	 * 
+	 * 方法描述 : 加载图片
+	 * 创建者：lixin 
+	 * 创建时间： 2015年1月16日 下午5:13:37
+	 * @param url
+	 * @param listener void
+	 *
+	 */
+	public void loadImage(String url,ImageListener listener) {
+		ImageCache imageCache = new ImageCache() {
+			@Override
+			public void putBitmap(String url, Bitmap bitmap) {
+				// TODO Auto-generated method stub
+				lruCache.put(url, bitmap);
+			}
+			
+			@Override
+			public Bitmap getBitmap(String url) {
+				// TODO Auto-generated method stub
+				return lruCache.get(url);
+			}
+		};
+		ImageLoader imageLoader = new ImageLoader(getRequestQueue(), imageCache);
+		imageLoader.get(url, listener);
+	}
 }
+
+
