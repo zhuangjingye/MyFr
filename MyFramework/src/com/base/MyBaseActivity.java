@@ -12,9 +12,15 @@ package com.base;
 
 import java.util.ArrayList;
 
+import org.json.JSONObject;
+
+import com.base.net.AbstractJsonRequest;
 import com.base.net.volley.Request;
 import com.base.net.volley.RequestQueue;
+import com.base.net.volley.Response;
+import com.base.net.volley.VolleyError;
 import com.base.net.volley.toolbox.ImageLoader;
+import com.base.net.volley.toolbox.JsonObjectRequest;
 import com.base.net.volley.toolbox.Volley;
 import com.base.net.volley.toolbox.ImageLoader.ImageCache;
 import com.base.net.volley.toolbox.ImageLoader.ImageListener;
@@ -23,6 +29,7 @@ import com.base.mydialog.MyBaseDialog;
 import com.base.view.toast.MyToast;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -288,6 +295,30 @@ public class MyBaseActivity extends Activity {
 		ImageLoader imageLoader = new ImageLoader(getRequestQueue(), imageCache);
 		imageLoader.get(url, listener);
 	}
+	/**
+	 * 获取发送json请求
+	 * @param request
+	 */
+	public void requestJSONBy(final AbstractJsonRequest request) { 
+   
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest( 
+        		request.getMothed(),  
+                request.getUrl(),  
+                request.getBody(), 
+                new Response.Listener<JSONObject>() { 
+                    @Override 
+                    public void onResponse(JSONObject response) { 
+                    	request.successed(response);
+                    } 
+                },  
+                new Response.ErrorListener() { 
+                    @Override 
+                    public void onErrorResponse(VolleyError arg0) { 
+                    	request.failed();
+                    } 
+                }); 
+        requestQueue.add(jsonObjectRequest); 
+    } 
 }
 
 
