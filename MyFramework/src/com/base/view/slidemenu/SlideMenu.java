@@ -1225,7 +1225,7 @@ public class SlideMenu extends ViewGroup {
 			final int indexCount = a.getIndexCount();
 			for (int index = 0; index < indexCount; index++) {
 				switch (a.getIndex(index)) {
-				case R.styleable.SlideMenu_Layout_layout_role:
+				case 0:
 					role = a.getInt(R.styleable.SlideMenu_Layout_layout_role,
 							-1);
 					break;

@@ -12,6 +12,10 @@ package com.base;
 
 import java.util.ArrayList;
 
+import com.base.mydialog.BaseDialog;
+import com.base.mydialog.MyBaseDialog;
+import com.base.view.toast.MyToast;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,6 +23,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Window;
+import android.widget.Toast;
 
 public class MyBaseActivity extends Activity {
 
@@ -27,6 +32,8 @@ public class MyBaseActivity extends Activity {
 	/** 选择关闭Activity的广播action */
 	public static String BROAD_CASET_CHOSE_FINISH = "broad.caset.chose.finish";
 	private BroadcastReceiverHelper rhelper;// 广播接收器
+
+	private MyBaseDialog myBaseDialog = null;//每一个acitivity全局唯一的dialog
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -152,5 +159,68 @@ public class MyBaseActivity extends Activity {
 	public boolean onFinish() {
 		return false;
 	}
+	
+	/**
+	 * 
+	 * 方法描述 : 根据提供都dialog对象显示对应都dialog
+	 * 创建者：lixin 
+	 * 创建时间： 2015年1月16日 上午11:12:09
+	 * @param dialog void
+	 *
+	 */
+	public void showDialog(BaseDialog dialog) {
+		if(myBaseDialog != null && myBaseDialog.isShowing()) {
+			myBaseDialog.hide();
+			myBaseDialog.dismiss();
+		}
+		myBaseDialog = null;
+		myBaseDialog = dialog.getDialog();
+		myBaseDialog.show();
+	}
 
+	/**
+	 * 
+	 * 方法描述 : 隐藏dialog
+	 * 创建者：lixin 
+	 * 创建时间： 2015年1月16日 上午11:16:08 void
+	 *
+	 */
+	public void hindDialog() {
+		if(null != myBaseDialog && myBaseDialog.isShowing()) {
+			myBaseDialog.hide();
+			myBaseDialog.dismiss();
+		}
+		myBaseDialog = null;
+	}
+	/**
+	 * 
+	 * 方法描述 : 通过toast显示信息
+	 * 创建者：lixin 
+	 * 创建时间： 2015年1月16日 下午2:33:38
+	 * @param str
+	 * @param showlong void
+	 *
+	 */
+	public void showToast(String str,int duration){
+		MyToast.makeText(this, str, duration).show();;
+	}
+	
+	public void showToast(int strId,int duration){
+		MyToast.makeText(this, strId, duration).show();;
+	}
+	
+	/**
+	 * 
+	 * 方法描述 : 默认短时间
+	 * 创建者：lixin 
+	 * 创建时间： 2015年1月16日 下午2:37:43
+	 * @param str void
+	 *
+	 */
+	public void showToast(String str) {
+		showToast(str, Toast.LENGTH_SHORT);
+	}
+	public void showToast(int strId) {
+		showToast(strId, Toast.LENGTH_SHORT);
+	}
 }

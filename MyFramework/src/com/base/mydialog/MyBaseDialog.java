@@ -23,11 +23,8 @@ public class MyBaseDialog extends Dialog {
 	}
 
 	public static MyBaseDialog getInstance(Context context) {
-		if (null == myBaseDialog) {
-			synchronized(MyBaseDialog.class){
-				myBaseDialog = new MyBaseDialog(context,R.style.My_dialog);
-			}
-		}
+		myBaseDialog = new MyBaseDialog(context,R.style.My_dialog);
+		myBaseDialog.setCanceledOnTouchOutside(false);
 		return myBaseDialog;
 	}
 	
@@ -46,5 +43,4 @@ public class MyBaseDialog extends Dialog {
 		View view = lf.inflate(layout_id, content);
 		return view;
 	}
-
 }
