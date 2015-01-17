@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import org.json.JSONObject;
 
 import com.base.net.AbstractJsonRequest;
+import com.base.net.RequestManager;
 import com.base.net.volley.Request;
 import com.base.net.volley.RequestQueue;
 import com.base.net.volley.Response;
@@ -279,45 +280,14 @@ public class MyBaseActivity extends Activity {
 	 *
 	 */
 	public void loadImage(String url,ImageListener listener) {
-		ImageCache imageCache = new ImageCache() {
-			@Override
-			public void putBitmap(String url, Bitmap bitmap) {
-				// TODO Auto-generated method stub
-				lruCache.put(url, bitmap);
-			}
-			
-			@Override
-			public Bitmap getBitmap(String url) {
-				// TODO Auto-generated method stub
-				return lruCache.get(url);
-			}
-		};
-		ImageLoader imageLoader = new ImageLoader(getRequestQueue(), imageCache);
-		imageLoader.get(url, listener);
+		RequestManager.getInstance().requestImage(this, url, listener);;
 	}
 	/**
 	 * 获取发送json请求
 	 * @param request
 	 */
 	public void requestJSONBy(final AbstractJsonRequest request) { 
-   
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest( 
-        		request.getMothed(),  
-                request.getUrl(),  
-                request.getBody(), 
-                new Response.Listener<JSONObject>() { 
-                    @Override 
-                    public void onResponse(JSONObject response) { 
-                    	request.successed(response);
-                    } 
-                },  
-                new Response.ErrorListener() { 
-                    @Override 
-                    public void onErrorResponse(VolleyError arg0) { 
-                    	request.failed();
-                    } 
-                }); 
-        requestQueue.add(jsonObjectRequest); 
+        RequestManager.getInstance().requestJSONBy(this, request);
     } 
 }
 
