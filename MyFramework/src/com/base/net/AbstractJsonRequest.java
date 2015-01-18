@@ -64,6 +64,6 @@ public abstract class AbstractJsonRequest {
 	abstract public String getUrl();
 	//请求方式
 	abstract public int getMothed();
-	//post方式发送请求的的body体 为json格式 默认返回空
-	abstract public JSONObject getBody();
+	//post方式发送请求的的body体 默认返回空
+	abstract public String getBody();
 }
