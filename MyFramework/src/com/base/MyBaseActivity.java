@@ -12,17 +12,25 @@ package com.base;
 
 import java.util.ArrayList;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.Volley;
-import com.android.volley.toolbox.ImageLoader.ImageCache;
-import com.android.volley.toolbox.ImageLoader.ImageListener;
+import org.json.JSONObject;
+
+import com.base.net.AbstractJsonRequest;
+import com.base.net.RequestManager;
+import com.base.net.volley.Request;
+import com.base.net.volley.RequestQueue;
+import com.base.net.volley.Response;
+import com.base.net.volley.VolleyError;
+import com.base.net.volley.toolbox.ImageLoader;
+import com.base.net.volley.toolbox.JsonObjectRequest;
+import com.base.net.volley.toolbox.Volley;
+import com.base.net.volley.toolbox.ImageLoader.ImageCache;
+import com.base.net.volley.toolbox.ImageLoader.ImageListener;
 import com.base.mydialog.BaseDialog;
 import com.base.mydialog.MyBaseDialog;
 import com.base.view.toast.MyToast;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -272,22 +280,15 @@ public class MyBaseActivity extends Activity {
 	 *
 	 */
 	public void loadImage(String url,ImageListener listener) {
-		ImageCache imageCache = new ImageCache() {
-			@Override
-			public void putBitmap(String url, Bitmap bitmap) {
-				// TODO Auto-generated method stub
-				lruCache.put(url, bitmap);
-			}
-			
-			@Override
-			public Bitmap getBitmap(String url) {
-				// TODO Auto-generated method stub
-				return lruCache.get(url);
-			}
-		};
-		ImageLoader imageLoader = new ImageLoader(getRequestQueue(), imageCache);
-		imageLoader.get(url, listener);
+		RequestManager.getInstance().requestImage(this, url, listener);;
 	}
+	/**
+	 * 获取发送json请求
+	 * @param request
+	 */
+	public void requestJSONBy(final AbstractJsonRequest request) { 
+        RequestManager.getInstance().requestJSONBy(this, request);
+    } 
 }
 
 
