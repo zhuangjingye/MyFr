@@ -6,6 +6,7 @@ package com.base.mydialog;
 import com.base.MyBaseActivity;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.View;
 
 abstract public class BaseDialog {
@@ -16,9 +17,12 @@ abstract public class BaseDialog {
 	
 	private View contentView;//内容容器
 	
-	public BaseDialog(final MyBaseActivity context) {
+	protected Handler myHandler;//用于与activity交互
+	
+	public BaseDialog(final MyBaseActivity context,Handler myHandler) {
 		this.myContext = context;
 		dialog = MyBaseDialog.getInstance(context);
+		this.myHandler = myHandler;
 	}
 	
 	/**
