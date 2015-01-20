@@ -10,9 +10,8 @@ import android.util.Log;
 
 /**
  * 缓存数据库
- * 
- * @author gyx
- * 
+ * 存储在数据库中到结构为key：value形势，该类一般用于缓存网络请求数据，
+ * 所以一般 key对应请求到url，value对应相应到response数据
  */
 public class CacheDB {
 
